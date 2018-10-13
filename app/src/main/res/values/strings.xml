@@ -3,4 +3,9 @@
     <string name="text">Welcome what\'s your name ?</string>
     <string name="edit">Please type your name</string>
     <string name="button">Start</string>
+    <string name="QuestionText">Question?</string>
+    <string name="button1">Answer1</string>
+    <string name="button2">Answer2</string>
+    <string name="button3">Answer3</string>
+    <string name="button4">Answer4</string>
 </resources>
