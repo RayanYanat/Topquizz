@@ -1,4 +1,4 @@
-package com.example.rayan.topquizz;
+package com.example.rayan.topquizz.controller;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,10 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.rayan.topquizz.R;
+import com.example.rayan.topquizz.model.User;
+
 public class MainActivity extends AppCompatActivity {
     private TextView mGreetingText;
     private EditText mNameInput;
     private Button mPlayButton;
+    private User mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         /**
          * referencement des éléments graphiques dans notre activité
          */
-
+        mUser = new User();
         mGreetingText = (TextView) findViewById(R.id.activity_main_greeting_txt);
         mNameInput = (EditText) findViewById(R.id.activity_main_name_input);
         mPlayButton = (Button) findViewById(R.id.activity_main_play_btn);
@@ -56,6 +60,11 @@ public class MainActivity extends AppCompatActivity {
         mPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /**
+                 * récupére et valorise le prénom de l'utilisateur
+                 */
+                String mFirstName = mNameInput.getText().toString();
+                mUser.setFristName(mFirstName);
                 //user clicked the button
                 /**
                  * permet de lancer la seconde activité qd l'utilisateur click sur le bouton

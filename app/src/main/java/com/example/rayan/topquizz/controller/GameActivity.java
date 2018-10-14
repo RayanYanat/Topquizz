@@ -1,9 +1,11 @@
-package com.example.rayan.topquizz;
+package com.example.rayan.topquizz.controller;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.rayan.topquizz.R;
 
 public class GameActivity extends AppCompatActivity {
 
