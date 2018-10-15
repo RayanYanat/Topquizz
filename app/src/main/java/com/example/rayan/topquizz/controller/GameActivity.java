@@ -1,5 +1,7 @@
 package com.example.rayan.topquizz.controller;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -24,12 +26,18 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
    private QuestionBank mQuestionBank;
    private Question mCurrentQuestion;
 
+   private int mScore;
+   private int mNumberOfQuestions;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
         mQuestionBank = this.generateQuestions();
+
+        mScore = 0;
+        mNumberOfQuestions = 4;
 
 
         mQuestionText = (TextView) findViewById(R.id.activity_game_question_text);
@@ -61,11 +69,36 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         if (responseIndex == mCurrentQuestion.getAnswerIndex()) {
             // Good answer
             Toast.makeText(this, "Correct", Toast.LENGTH_SHORT).show();
+            mScore++;
         } else {
             // Wrong answer
             Toast.makeText(this, "Wrong answer!", Toast.LENGTH_SHORT).show();
         }
+
+        if (--mNumberOfQuestions == 0) {
+            // End the game
+            endGame();
+        } else {
+            mCurrentQuestion = mQuestionBank.getQuestion();
+            displayQuestion(mCurrentQuestion);
+        }
     }
+
+    private void endGame() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Well done!")
+                .setMessage("Your score is " + mScore)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .create()
+                .show();
+    }
+
 
     /**
      * methode qui prend en paramétre une question et qui met à jour les différents champs d'interface graphique
