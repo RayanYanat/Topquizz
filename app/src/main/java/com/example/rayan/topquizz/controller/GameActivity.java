@@ -1,6 +1,7 @@
 package com.example.rayan.topquizz.controller;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,6 +29,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
    private int mScore;
    private int mNumberOfQuestions;
+
+   public static final String BUNDLE_EXTRA_SCORE = "BUNDLE_EXTRA_SCORE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +95,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent();
+                        // put extra permet de mettre la valeur dans l'Intent
+                        intent.putExtra(BUNDLE_EXTRA_SCORE, mScore);
+                        setResult(RESULT_OK, intent);
                         finish();
                     }
                 })
@@ -112,6 +119,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             mAnswerBtn4.setText(question.getChoiceList().get(3));
 
     }
+
 
     private QuestionBank generateQuestions(){
         Question question1 = new Question("What is the name of the current french president?",
@@ -140,7 +148,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-        return new QuestionBank(Arrays.asList(question1));
+        return new QuestionBank(Arrays.asList(question1,question2,question3,question4,question5,question6));
     }
 
 }

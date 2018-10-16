@@ -39,7 +39,7 @@ public class Question {
 
    public void setChoiceList(List<String> choiceList){
       if (choiceList == null){
-         //exception (le tableau ne peut pas etre null
+         //exception (le tableau ne peut pas etre null)
          throw new IllegalArgumentException("Array list cannot be null");
       }
       mChoiceList=choiceList;

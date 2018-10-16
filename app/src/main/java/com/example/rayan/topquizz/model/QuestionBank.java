@@ -19,9 +19,8 @@ public class QuestionBank {
 
     public Question getQuestion() {
         //les questions sont dans une boucles
-        if (mNextQuestionIndex == mQuestionList.size()){
+        if (mNextQuestionIndex == mQuestionList.size())
             mNextQuestionIndex = 0;
-        }
 
         return mQuestionList.get(mNextQuestionIndex++);
 
