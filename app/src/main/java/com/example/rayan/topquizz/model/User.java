@@ -2,18 +2,18 @@ package com.example.rayan.topquizz.model;
 
 public class User {
 
-    private String mFristName ;
+    private String mFirstName ;
 
     /**
      * recupére et met à jour le prénom
      * @return
      */
-    public String getFristName() {
-        return mFristName;
+    public String getFirstName() {
+        return mFirstName;
     }
 
-    public void setFristName(String fristName) {
-        mFristName = fristName;
+    public void setFirstName(String firstName) {
+        mFirstName = firstName;
     }
 
     /**
@@ -23,7 +23,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "mFristName='" + mFristName + '\'' +
+                "mFristName='" + mFirstName + '\'' +
                 '}';
     }
 }

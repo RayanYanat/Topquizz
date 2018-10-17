@@ -1,6 +1,7 @@
 package com.example.rayan.topquizz.controller;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,14 +21,22 @@ public class MainActivity extends AppCompatActivity {
     private Button mPlayButton;
     private User mUser;
     public static final int GAME_ACTIVITY_REQUEST_CODE = 26;
+    private SharedPreferences mPreferences;
+
+    public static final String PREF_KEY_SCORE = "PREF_KEY_SCORE";
+    public static final String PREF_KEY_FIRSTNAME = "PREF_KEY_FIRSTNAME";
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (GAME_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode) {
             // Fetch  the score from the Intent
             int score = data.getIntExtra(GameActivity.BUNDLE_EXTRA_SCORE, 0);
-          }
+
+            mPreferences.edit().putInt(PREF_KEY_SCORE, score).apply();
+
+            greetUser();
         }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
          * referencement des éléments graphiques dans notre activité
          */
         mUser = new User();
+        //Seul notre appli aura acces a ce fichier
+        mPreferences = getPreferences(MODE_PRIVATE);
+
         mGreetingText = (TextView) findViewById(R.id.activity_main_greeting_txt);
         mNameInput = (EditText) findViewById(R.id.activity_main_name_input);
         mPlayButton = (Button) findViewById(R.id.activity_main_play_btn);
@@ -47,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
          */
         mPlayButton.setEnabled(false);
 
+        greetUser();
+
         mNameInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -55,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mPlayButton.setEnabled(s.toString().length()!= 0);
+                mPlayButton.setEnabled(s.toString().length() != 0);
 
             }
 
@@ -74,7 +88,11 @@ public class MainActivity extends AppCompatActivity {
                  * récupére et valorise le prénom de l'utilisateur
                  */
                 String mFirstName = mNameInput.getText().toString();
-                mUser.setFristName(mFirstName);
+                mUser.setFirstName(mFirstName);
+                /**
+                 * edite les valeurs des préferences + ajoute une valeur de type String + associe le prenom de l'utilisateur
+                 */
+                mPreferences.edit().putString(PREF_KEY_FIRSTNAME, mUser.getFirstName()).apply();
                 //user clicked the button
                 /**
                  * permet de lancer la seconde activité qd l'utilisateur click sur le bouton
@@ -84,11 +102,39 @@ public class MainActivity extends AppCompatActivity {
                 /**
                  * demande a la classe GameActivity de renvoyer un resultat
                  */
-                startActivityForResult(gameActivityIntent,GAME_ACTIVITY_REQUEST_CODE);
+                startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
 
             }
         });
 
 
     }
+
+    /**
+     * premet de saluer l'utilisateur et de lui rappeler son score si une partie à déja était lancer
+     */
+    private void greetUser() {
+        String firstname = mPreferences.getString(PREF_KEY_FIRSTNAME, null);
+
+        if (null != firstname) {
+            int score = mPreferences.getInt(PREF_KEY_SCORE, 0);
+
+            String fulltext = "Welcome back, " + firstname
+                    + "!\nYour last score was " + score
+                    + ", will you do better this time?";
+            mGreetingText.setText(fulltext);
+            mNameInput.setText(firstname);
+            mNameInput.setSelection(firstname.length());
+            mPlayButton.setEnabled(true);
+        }
+
+
+    }
 }
+
+
+
+
+
+
+
