@@ -2,9 +2,11 @@ package com.example.rayan.topquizz.controller;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -32,6 +34,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
    public static final String BUNDLE_EXTRA_SCORE = "BUNDLE_EXTRA_SCORE";
 
+   // allows to activate or not the different events to touch
+    private boolean mEnableTouchEvents;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +46,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         mScore = 0;
         mNumberOfQuestions = 4;
+        mEnableTouchEvents = true;
 
 
         mQuestionText = (TextView) findViewById(R.id.activity_game_question_text);
@@ -78,13 +84,38 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(this, "Wrong answer!", Toast.LENGTH_SHORT).show();
         }
 
-        if (--mNumberOfQuestions == 0) {
-            // End the game
-            endGame();
-        } else {
-            mCurrentQuestion = mQuestionBank.getQuestion();
-            displayQuestion(mCurrentQuestion);
-        }
+        mEnableTouchEvents= false;
+
+        /**
+         * permet d'attendre un certain temps avant d'effectuer une action
+         */
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mEnableTouchEvents = true;
+
+                // If this is the last question, ends the game.
+                // Else, display the next question.
+                if (--mNumberOfQuestions == 0) {
+                    // End the game
+                    endGame();
+                } else {
+                    mCurrentQuestion = mQuestionBank.getQuestion();
+                    displayQuestion(mCurrentQuestion);
+                }
+            }
+        }, 2000); // LENGTH_SHORT is usually 2 second long
+    }
+
+    /**
+     * méthode qui est appelée à chaque fois qu'un utilisateur touche l'écran
+     * true = les actions doivent être prises en compte
+     * false = elles doivent être ignorées.
+     * @return
+     */
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        return mEnableTouchEvents && super.dispatchTouchEvent(ev);
     }
 
     private void endGame() {
