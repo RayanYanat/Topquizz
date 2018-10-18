@@ -42,6 +42,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        System.out.println("GameActivity::onCreate()");
         mQuestionBank = this.generateQuestions();
 
         mScore = 0;
@@ -180,6 +181,41 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
 
         return new QuestionBank(Arrays.asList(question1,question2,question3,question4,question5,question6));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        System.out.println("MainActivity::onStart()");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        System.out.println("MainActivity::onResume()");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        System.out.println("MainActivity::onPause()");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        System.out.println("MainActivity::onStop()");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        System.out.println("MainActivity::onDestroy()");
     }
 
 }
